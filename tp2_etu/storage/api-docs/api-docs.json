@@ -1,0 +1,204 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Films API",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/films/{id}/actors": {
+            "get": {
+                "tags": [
+                    "ActorFilm"
+                ],
+                "summary": "Get list of actors for a film",
+                "description": "Returns list of actors for a film",
+                "operationId": "ba6ffc810d151f631a90a873ca9242ad",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/api/critics/{id}": {
+            "delete": {
+                "tags": [
+                    "Critics"
+                ],
+                "summary": "Deletes a critics",
+                "description": "Deletes a critics",
+                "operationId": "4c7bbd907e57760bbbfc560c1ba8e1ba",
+                "responses": {
+                    "204": {
+                        "description": "No content"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/api/films": {
+            "get": {
+                "tags": [
+                    "Films"
+                ],
+                "summary": "Gets list of films",
+                "description": "Returns list of films",
+                "operationId": "271e474415d2f29bf3c163247c5f4639",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/search-films": {
+            "get": {
+                "tags": [
+                    "Films"
+                ],
+                "summary": "Gets list of films based on criterias",
+                "description": "Returns list of films",
+                "operationId": "f89669d8e90cc4160fb4373e56700bdc",
+                "parameters": [
+                    {
+                        "parameter": "keyword_in_query",
+                        "name": "keyword",
+                        "in": "query",
+                        "description": "A keyword to look for in the title",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "parameter": "rating_in_query",
+                        "name": "rating",
+                        "in": "query",
+                        "description": "A rating to look for in the rating description",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "parameter": "minLength_in_query",
+                        "name": "minLength",
+                        "in": "query",
+                        "description": "Min length of the movies to find",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "parameter": "maxLength_in_query",
+                        "name": "maxLength",
+                        "in": "query",
+                        "description": "Min length of the movies to find",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/films/{id}/average-score": {
+            "get": {
+                "tags": [
+                    "Films"
+                ],
+                "summary": "Gets average score of a film",
+                "description": "Returns the average score",
+                "operationId": "fcd693de18daad26767293c2f5a2927e",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/films/{id}/critics": {
+            "get": {
+                "tags": [
+                    "FilmCritics"
+                ],
+                "summary": "Get list of critics for a film",
+                "description": "Returns list of critics for a film",
+                "operationId": "c8f40755ef3dfc8bc0f3e8632a211163",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Creates a user",
+                "description": "Returns a user",
+                "operationId": "1a63883edb751cb640a2f6f516236f49",
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "422": {
+                        "description": "Invalid data"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Updates a user",
+                "description": "Returns a user",
+                "operationId": "b9091397c8b25f12c6adb74be6ce3a5a",
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "422": {
+                        "description": "Invalid Data"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}/favorite-language'": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Gets favorite language of a user",
+                "description": "Returns favorite language of a user",
+                "operationId": "ca5fc4998d991c2b08009eca78736cbf",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        }
+    }
+}
