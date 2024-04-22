@@ -31,7 +31,7 @@ class AuthController extends Controller
 
    /**
      * @OA\Post(
-     *     path="/api/register",
+     *     path="/api/signup",
      *     tags={"Auth"},
      *     summary="Register a new user",
      *     @OA\RequestBody(
@@ -44,7 +44,7 @@ class AuthController extends Controller
      *          ),
      *     ),
      *     @OA\Response(
-     *          response=200,
+     *          response=201,
      *          description="Successful operation",
      *          @OA\JsonContent(
      *              @OA\Property(property="user", type="object"),
@@ -71,8 +71,6 @@ class AuthController extends Controller
             'first_name' => 'required|string|max:50',
         ]);
 
-        //Une fois validé, créer et enregistrer le User dans la BD avec les infos de la requête (encryptez le mot de passe avec bcrypt !)
-
         $user = User::create([
             'login' => $request->login,
             'password' => bcrypt($request->password),
@@ -86,7 +84,7 @@ class AuthController extends Controller
     }
     /**
  * @OA\Post(
- *     path="/api/login",
+ *     path="/api/signin",
  *     tags={"Auth"},
  *     summary="Login user",
  *     @OA\RequestBody(
@@ -134,7 +132,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *    path="/api/logout",
+     *    path="/api/signout",
      *   tags={"Auth"},
      *  summary="Logout user",
      * @OA\Response(

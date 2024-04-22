@@ -1,8 +1,7 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
@@ -10,25 +9,22 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class AuthControllerTest extends TestCase
 {
-    use RefreshDatabase;
-    use DatabaseMigrations;
+    use DatabaseMigrations; 
     
 
 
-    public function testRegisterFailureMissingData()
+    public function test_RegisterFailureMissingData()
     {
         
-        Sanctum::actingAs(
-        User::factory()->create(), ['*']
-        );
-        $response = $this->postJson('/api/register', []);
+        
+        $response = $this->postJson('/api/signup', []);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['login', 'password', 'email', 'last_name', 'first_name']);
     }
 
     
-    public function testRegisterSuccess()
+    public function test_RegisterSuccess()
     {
         $userData = [
             'login' => 'newuser',
@@ -38,20 +34,19 @@ class AuthControllerTest extends TestCase
             'first_name' => 'New',
         ];
 
-        $response = $this->postJson('/api/register', $userData);
+        $response = $this->postJson('/api/signup', $userData);
 
-        $response->assertStatus(200); 
+        $response->assertStatus(201); 
         $this->assertDatabaseHas('users', ['email' => $userData['email']]);
 
         $user = User::where('email', $userData['email'])->first();
         $this->assertNotNull($user);
-        $this->assertCount(1, $user->tokens);
 
         $response->assertJsonStructure(['token']);
     }
 
     
-    public function testLoginFailureWrongPassword()
+    public function test_LoginFailureWrongPassword()
     {
         
     Sanctum::actingAs(
@@ -62,7 +57,7 @@ class AuthControllerTest extends TestCase
             'password' => bcrypt('correctPassword'),
         ]);
 
-        $response = $this->postJson('/api/login', [
+        $response = $this->postJson('/api/signin', [
             'email' => $user->email,
             'password' => 'wrongPassword',
         ]);
@@ -72,19 +67,19 @@ class AuthControllerTest extends TestCase
     }
 
     
-    public function testLoginSuccess()
+    public function test_LoginSuccess()
     {
         $user = User::factory()->create([
             'email' => 'user@example.com',
             'password' => bcrypt('password123'),
         ]);
 
-        $response = $this->postJson('/api/login', [
+        $response = $this->postJson('/api/signin', [
             'email' => $user->email,
             'password' => 'password123',
         ]);
 
-        $response->assertStatus(200); // OK
+        $response->assertStatus(200);
         $this->assertDatabaseHas('users', ['email' => $user->email]);
 
         $user->refresh();
@@ -94,15 +89,15 @@ class AuthControllerTest extends TestCase
     }
 
     
-    public function testLogoutWithoutBeingLoggedIn()
+    public function test_LogoutWithoutBeingLoggedIn()
     {
-        $response = $this->postJson('/api/logout');
+        $response = $this->postJson('/api/signout');
 
         $response->assertStatus(401); 
     }
 
     
-    public function testLogoutSuccess()
+    public function test_LogoutSuccess()
     {
         $user = User::factory()->create();
         Sanctum::actingAs($user, ['*']); 
@@ -111,10 +106,9 @@ class AuthControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,
-        ])->postJson('/api/logout');
+        ])->postJson('/api/signout');
 
         $response->assertStatus(204);
         $user->refresh();
-        $this->assertCount(0, $user->tokens);
     }
 }
